@@ -25,11 +25,28 @@ python -m src.cli path/to/image.jpg
 
 ### 选项
 
-- `--threshold`: 设置置信度阈值 (默认: 0.35)。
+- `--threshold`: 设置全局置信度阈值 (默认: 0.35)。
+- `--min-confidence`: 设置最小置信度 (默认: 0.1)。低于此值的标签将被忽略。
+
+#### 类别特定阈值
+
+您可以为特定类别设置不同的阈值。如果未设置，将使用全局 `--threshold`。
+
+- `--threshold-artist`: Artist (画师) 类别阈值
+- `--threshold-character`: Character (角色) 类别阈值
+- `--threshold-copyright`: Copyright (作品) 类别阈值
+- `--threshold-general`: General (常规) 类别阈值
+- `--threshold-meta`: Meta (元数据) 类别阈值
+- `--threshold-rating`: Rating (分级) 类别阈值
+- `--threshold-year`: Year (年份) 类别阈值
 
 示例:
 ```bash
+# 设置全局阈值为 0.5
 python run.py image.png --threshold 0.5
+
+# 设置全局阈值为 0.3，但角色标签需要 0.6 的置信度
+python run.py image.png --threshold 0.3 --threshold-character 0.6
 ```
 
 ## 输出
@@ -42,4 +59,3 @@ python run.py image.png --threshold 0.5
 - 元数据 (Meta)
 - 分级 (Rating)
 - 年份 (Year)
-
