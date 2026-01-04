@@ -109,14 +109,14 @@ def main():
 
     print(f"正在处理 {args.image_path}...")
 
-    active_category_thresholds = get_category_thresholds(args)
+    category_thresholds = get_category_thresholds(args)
 
     result = process_single_image(
         image_path=args.image_path,
         model_path=onnx_path,
         metadata=metadata,
-        active_threshold=args.threshold,
-        active_category_thresholds=active_category_thresholds,
+        threshold=args.threshold,
+        category_thresholds=category_thresholds,
         min_confidence=args.min_confidence
     )
 

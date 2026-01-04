@@ -180,11 +180,13 @@ class ONNXImageTagger:
         return batch_results
 
 
-def process_single_image(image_path, model_path, metadata, active_threshold=0.35, active_category_thresholds=None,
-                         min_confidence=0.1):
+def process_single_image(image_path, model_path, metadata, threshold=0.61, category_thresholds=None,
+                         min_confidence=0.01):
     """
     处理单张图像
     """
+    if category_thresholds is None:
+        category_thresholds = {}
     try:
         # 创建或重用 tagger
         if hasattr(process_single_image, 'tagger'):
@@ -200,8 +202,8 @@ def process_single_image(image_path, model_path, metadata, active_threshold=0.35
         # 运行推理
         results = tagger.predict_batch(
             [img_array],
-            threshold=active_threshold,
-            category_thresholds=active_category_thresholds,
+            threshold=threshold,
+            category_thresholds=category_thresholds,
             min_confidence=min_confidence
         )
         inference_time = time.time() - start_time
