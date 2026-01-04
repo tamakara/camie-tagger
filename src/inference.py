@@ -70,19 +70,18 @@ class ONNXImageTagger:
     def __init__(self, model_path, metadata):
         # 加载模型
         self.model_path = model_path
-        try:
-            self.session = ort.InferenceSession(
-                model_path,
-                providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
-            )
-            print(f"使用推理提供程序: {self.session.get_providers()}")
-        except Exception as e:
-            print(f"CUDA 不可用，使用 CPU: {e}")
-            self.session = ort.InferenceSession(
-                model_path,
-                providers=['CPUExecutionProvider']
-            )
-            print(f"使用推理提供程序: {self.session.get_providers()}")
+
+        available = ort.get_available_providers()
+        providers = []
+        if "CUDAExecutionProvider" in available:
+            providers.append("CUDAExecutionProvider")
+        providers.append("CPUExecutionProvider")
+
+        self.session = ort.InferenceSession(
+            model_path,
+            providers=providers
+        )
+        print(f"使用推理提供程序: {self.session.get_providers()}")
 
         # 存储元数据
         self.metadata = metadata
