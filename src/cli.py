@@ -99,13 +99,11 @@ def main():
         sys.exit(1)
 
     print("正在加载模型...")
-    model_info, metadata = load_model_and_metadata()
+    model_path, metadata = load_model_and_metadata()
 
-    if not model_info or not model_info.get('onnx_available'):
+    if not model_path:
         print("错误: 模型不可用。")
         sys.exit(1)
-
-    onnx_path = model_info['onnx_path']
 
     print(f"正在处理 {args.image_path}...")
 
@@ -113,7 +111,7 @@ def main():
 
     result = process_single_image(
         image_path=args.image_path,
-        model_path=onnx_path,
+        model_path=model_path,
         metadata=metadata,
         threshold=args.threshold,
         category_thresholds=category_thresholds,

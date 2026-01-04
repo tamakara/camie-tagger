@@ -7,7 +7,6 @@ from huggingface_hub import hf_hub_download
 MODEL_REPO = "Camais03/camie-tagger-v2"
 ONNX_MODEL_FILE = "camie-tagger-v2.onnx"
 METADATA_FILE = "camie-tagger-v2-metadata.json"
-VALIDATION_FILE = "full_validation_results.json"
 
 
 def get_model_files():
@@ -37,7 +36,6 @@ def get_model_files():
             )
 
         # 2. 获取 ONNX 模型
-        onnx_path = None
         try:
             print("正在检查本地 ONNX 模型...")
             onnx_path = hf_hub_download(
@@ -73,30 +71,9 @@ def get_model_files():
                             f.write(chunk)
                 print(f"直接下载成功: {onnx_path}")
 
-        # 3. 获取验证结果文件 (可选)
-        validation_path = None
-        try:
-            validation_path = hf_hub_download(
-                repo_id=MODEL_REPO,
-                filename=VALIDATION_FILE,
-                cache_dir=cache_dir,
-                local_files_only=True
-            )
-        except Exception:
-            try:
-                validation_path = hf_hub_download(
-                    repo_id=MODEL_REPO,
-                    filename=VALIDATION_FILE,
-                    cache_dir=cache_dir
-                )
-            except Exception as e:
-                print(f"验证结果不可用: {e}")
-                validation_path = None
-
         return {
             'onnx_path': onnx_path,
             'metadata_path': metadata_path,
-            'validation_path': validation_path
         }
     except Exception as e:
         print(f"下载模型文件失败: {e}")
@@ -111,22 +88,16 @@ def load_model_and_metadata():
     if not model_files:
         return None, None, {}
 
-    model_info = {
-        'onnx_available': model_files['onnx_path'] is not None,
-        'validation_results_available': model_files['validation_path'] is not None,
-        'onnx_path': model_files['onnx_path'],
-        'metadata_path': model_files['metadata_path'],
-        'validation_path': model_files['validation_path']
-    }
+    model_path = model_files['onnx_path']
+    metadata_path = model_files['metadata_path']
 
     # 加载元数据
     metadata = None
     if model_files['metadata_path']:
         try:
-            with open(model_files['metadata_path'], 'r', encoding='utf-8') as f:
+            with open(metadata_path, 'r', encoding='utf-8') as f:
                 metadata = json.load(f)
         except Exception as e:
             print(f"加载元数据出错: {e}")
 
-    return model_info, metadata
-
+    return model_path, metadata
