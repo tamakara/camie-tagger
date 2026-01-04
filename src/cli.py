@@ -19,8 +19,8 @@ def validate_probability(value):
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Camie 图像标注工具 CLI")
     parser.add_argument("image_path", help="图像文件路径")
-    parser.add_argument("--threshold", type=validate_probability, default=0.35, help="全局置信度阈值 (默认: 0.35)")
-    parser.add_argument("--min-confidence", type=validate_probability, default=0.1, help="最小置信度 (默认: 0.1)")
+    parser.add_argument("--threshold", type=validate_probability, default=0.61, help="全局置信度阈值 (默认: 0.61)")
+    parser.add_argument("--min-confidence", type=validate_probability, default=0.01, help="最小置信度 (默认: 0.01)")
 
     # 类别特定阈值
     parser.add_argument("--threshold-artist", type=validate_probability, help="Artist 类别阈值")

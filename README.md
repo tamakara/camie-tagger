@@ -1,10 +1,10 @@
 # Camie Tagger CLI
 
-这是一个基于 Camie Tagger ONNX 模型的图像标注命令行工具。
+这是一个基于 Camie-Tagger-v2 模型的动漫插画标签生成命令行工具。
 
 ## 安装
 
-1. 安装依赖:
+安装依赖:
    ```bash
    pip install -r requirements.txt
    ```
@@ -25,8 +25,8 @@ python -m src.cli path/to/image.jpg
 
 ### 选项
 
-- `--threshold`: 设置全局置信度阈值 (默认: 0.35)。
-- `--min-confidence`: 设置最小置信度 (默认: 0.1)。低于此值的标签将被忽略。
+- `--threshold`: 设置全局置信度阈值 (默认: 0.61)。
+- `--min-confidence`: 设置最小置信度 (默认: 0.01)。低于此值的标签将被忽略。
 
 #### 类别特定阈值
 
